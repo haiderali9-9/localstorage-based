@@ -21,7 +21,9 @@ const TodoList = () => {
 
   // Load todos from localStorage on initial render
   useEffect(() => {
-    setTodos(getTodos());
+    const loadedTodos = getTodos();
+    console.log("Loaded todos:", loadedTodos);
+    setTodos(loadedTodos);
   }, []);
 
   const handleAddTodo = (text: string) => {
@@ -34,6 +36,7 @@ const TodoList = () => {
   };
 
   const handleToggle = (id: string) => {
+    console.log(`Toggling todo ${id}`);
     const updatedTodos = toggleTodo(id);
     setTodos(updatedTodos);
   };
@@ -71,6 +74,10 @@ const TodoList = () => {
     if (filter === "completed") return todo.completed;
     return true; // "all" filter
   });
+
+  console.log("Current filter:", filter);
+  console.log("Filtered todos:", filteredTodos);
+  console.log("Completed todos:", todos.filter(todo => todo.completed).length);
 
   const completedCount = todos.filter((todo) => todo.completed).length;
 

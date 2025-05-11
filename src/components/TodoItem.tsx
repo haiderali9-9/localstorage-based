@@ -46,6 +46,8 @@ const TodoItem: React.FC<TodoItemProps> = ({
     }
   };
 
+  console.log(`Rendering todo ${todo.id}, completed: ${todo.completed}`);
+
   return (
     <div className="flex items-center gap-3 py-3 px-4 bg-white rounded-lg shadow-sm border border-gray-100 mb-2 group transition-all hover:shadow-md">
       <Checkbox 

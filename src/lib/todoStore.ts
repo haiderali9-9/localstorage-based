@@ -17,6 +17,7 @@ export const getTodos = (): Todo[] => {
 
 export const saveTodos = (todos: Todo[]): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  console.log("Saved todos:", todos);
 };
 
 export const addTodo = (text: string): Todo[] => {
@@ -35,9 +36,13 @@ export const addTodo = (text: string): Todo[] => {
 
 export const toggleTodo = (id: string): Todo[] => {
   const todos = getTodos();
-  const updatedTodos = todos.map((todo) => 
-    todo.id === id ? { ...todo, completed: !todo.completed } : todo
-  );
+  const updatedTodos = todos.map((todo) => {
+    if (todo.id === id) {
+      console.log(`Toggling todo ${id} from ${todo.completed} to ${!todo.completed}`);
+      return { ...todo, completed: !todo.completed };
+    }
+    return todo;
+  });
   
   saveTodos(updatedTodos);
   return updatedTodos;
