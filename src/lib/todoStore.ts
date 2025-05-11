@@ -10,19 +10,17 @@ export const getTodos = (): Todo[] => {
   try {
     return JSON.parse(storedTodos);
   } catch (error) {
-    console.error("Error parsing todos from localStorage:", error);
     return [];
   }
 };
 
 export const saveTodos = (todos: Todo[]): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  console.log("Saved todos:", todos);
 };
 
 export const addTodo = (text: string): Todo[] => {
   const todos = getTodos();
-  const newTodo: Todo = {
+  const newTodo = {
     id: Date.now().toString(),
     text: text.trim(),
     completed: false,
@@ -36,13 +34,9 @@ export const addTodo = (text: string): Todo[] => {
 
 export const toggleTodo = (id: string): Todo[] => {
   const todos = getTodos();
-  const updatedTodos = todos.map((todo) => {
-    if (todo.id === id) {
-      console.log(`Toggling todo ${id} from ${todo.completed} to ${!todo.completed}`);
-      return { ...todo, completed: !todo.completed };
-    }
-    return todo;
-  });
+  const updatedTodos = todos.map(todo => 
+    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+  );
   
   saveTodos(updatedTodos);
   return updatedTodos;
@@ -50,7 +44,7 @@ export const toggleTodo = (id: string): Todo[] => {
 
 export const updateTodoText = (id: string, text: string): Todo[] => {
   const todos = getTodos();
-  const updatedTodos = todos.map((todo) => 
+  const updatedTodos = todos.map(todo => 
     todo.id === id ? { ...todo, text: text.trim() } : todo
   );
   
@@ -60,7 +54,7 @@ export const updateTodoText = (id: string, text: string): Todo[] => {
 
 export const deleteTodo = (id: string): Todo[] => {
   const todos = getTodos();
-  const updatedTodos = todos.filter((todo) => todo.id !== id);
+  const updatedTodos = todos.filter(todo => todo.id !== id);
   
   saveTodos(updatedTodos);
   return updatedTodos;
@@ -68,7 +62,7 @@ export const deleteTodo = (id: string): Todo[] => {
 
 export const clearCompleted = (): Todo[] => {
   const todos = getTodos();
-  const updatedTodos = todos.filter((todo) => !todo.completed);
+  const updatedTodos = todos.filter(todo => !todo.completed);
   
   saveTodos(updatedTodos);
   return updatedTodos;

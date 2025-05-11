@@ -1,11 +1,10 @@
 
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState } from "react";
 import { Todo } from "@/types/todo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Check, Edit, Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Edit, Trash2, Check } from "lucide-react";
 
 interface TodoItemProps {
   todo: Todo;
@@ -37,7 +36,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
     setIsEditing(false);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSave();
     } else if (e.key === "Escape") {
@@ -46,20 +45,15 @@ const TodoItem: React.FC<TodoItemProps> = ({
     }
   };
 
-  console.log(`Rendering todo ${todo.id}, completed: ${todo.completed}`);
-
   return (
-    <div className="flex items-center gap-3 py-3 px-4 bg-white rounded-lg shadow-sm border border-gray-100 mb-2 group transition-all hover:shadow-md">
+    <div className="flex items-center gap-3 p-3 bg-white border-b">
       <Checkbox 
-        id={`todo-${todo.id}`}
         checked={todo.completed}
         onCheckedChange={() => onToggle(todo.id)}
-        className="h-5 w-5 text-purple-500 rounded-md"
       />
       
       {isEditing ? (
         <Input
-          type="text"
           value={editText}
           onChange={(e) => setEditText(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -68,49 +62,42 @@ const TodoItem: React.FC<TodoItemProps> = ({
           autoFocus
         />
       ) : (
-        <label 
-          htmlFor={`todo-${todo.id}`}
-          className={cn(
-            "flex-1 cursor-pointer transition-all text-left",
-            todo.completed && "text-gray-400 line-through"
-          )}
+        <span 
+          className={`flex-1 ${todo.completed ? "line-through text-gray-400" : ""}`}
         >
           {todo.text}
-        </label>
+        </span>
       )}
       
-      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        {!isEditing && (
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleEdit}
-            className="h-8 w-8 text-gray-500 hover:text-purple-500"
-            title="Edit task"
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-        )}
-        
-        {isEditing ? (
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleSave}
-            className="h-8 w-8 text-green-600"
-            title="Save changes"
-          >
-            <Check className="h-4 w-4" />
-          </Button>
+      <div className="flex gap-1">
+        {!isEditing ? (
+          <>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleEdit}
+              className="h-8 w-8"
+            >
+              <Edit className="h-4 w-4" />
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => onDelete(todo.id)}
+              className="h-8 w-8"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </>
         ) : (
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={() => onDelete(todo.id)}
-            className="h-8 w-8 text-gray-500 hover:text-red-500"
-            title="Delete task"
+            onClick={handleSave}
+            className="h-8 w-8"
           >
-            <Trash2 className="h-4 w-4" />
+            <Check className="h-4 w-4" />
           </Button>
         )}
       </div>

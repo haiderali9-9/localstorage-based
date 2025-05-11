@@ -4,20 +4,16 @@ import TodoList from "@/components/TodoList";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
-      <div className="container px-4">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">My Todo App</h1>
-          <p className="text-gray-600">Organize your tasks with ease</p>
+    <div className="min-h-screen bg-gray-50 py-6">
+      <div className="container max-w-md mx-auto px-4">
+        <header className="mb-6 text-center">
+          <h1 className="text-2xl font-bold text-gray-800">Simple Todo App</h1>
+          <p className="text-gray-600 text-sm">Your tasks are saved in localStorage</p>
         </header>
         
-        <main className="bg-white rounded-xl shadow-md p-6 mx-auto max-w-md">
+        <main className="bg-white rounded-lg shadow p-6">
           <TodoList />
         </main>
-        
-        <footer className="mt-10 text-center text-sm text-gray-500">
-          <p>Your tasks are saved automatically in your browser's localStorage</p>
-        </footer>
       </div>
     </div>
   );

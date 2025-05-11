@@ -12,31 +12,21 @@ import {
   deleteTodo, 
   clearCompleted 
 } from "@/lib/todoStore";
-import { useToast } from "@/hooks/use-toast";
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<FilterStatus>("all");
-  const { toast } = useToast();
 
-  // Load todos from localStorage on initial render
   useEffect(() => {
-    const loadedTodos = getTodos();
-    console.log("Loaded todos:", loadedTodos);
-    setTodos(loadedTodos);
+    setTodos(getTodos());
   }, []);
 
   const handleAddTodo = (text: string) => {
     const updatedTodos = addTodo(text);
     setTodos(updatedTodos);
-    toast({
-      title: "Task added",
-      description: "Your task has been added successfully."
-    });
   };
 
   const handleToggle = (id: string) => {
-    console.log(`Toggling todo ${id}`);
     const updatedTodos = toggleTodo(id);
     setTodos(updatedTodos);
   };
@@ -44,28 +34,16 @@ const TodoList = () => {
   const handleUpdateText = (id: string, text: string) => {
     const updatedTodos = updateTodoText(id, text);
     setTodos(updatedTodos);
-    toast({
-      title: "Task updated",
-      description: "Your task has been updated successfully."
-    });
   };
 
   const handleDelete = (id: string) => {
     const updatedTodos = deleteTodo(id);
     setTodos(updatedTodos);
-    toast({
-      title: "Task deleted",
-      description: "Your task has been deleted successfully."
-    });
   };
 
   const handleClearCompleted = () => {
     const updatedTodos = clearCompleted();
     setTodos(updatedTodos);
-    toast({
-      title: "Completed tasks cleared",
-      description: "All completed tasks have been removed."
-    });
   };
 
   // Filter todos based on current filter
@@ -75,18 +53,14 @@ const TodoList = () => {
     return true; // "all" filter
   });
 
-  console.log("Current filter:", filter);
-  console.log("Filtered todos:", filteredTodos);
-  console.log("Completed todos:", todos.filter(todo => todo.completed).length);
-
   const completedCount = todos.filter((todo) => todo.completed).length;
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       <TodoInput onAddTodo={handleAddTodo} />
 
       {filteredTodos.length > 0 ? (
-        <div className="space-y-2 mb-4">
+        <div className="border rounded-md overflow-hidden">
           {filteredTodos.map((todo) => (
             <TodoItem
               key={todo.id}
@@ -98,7 +72,7 @@ const TodoList = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center p-8 text-gray-500">
+        <div className="text-center p-4 text-gray-500 border rounded-md">
           {filter === "all" 
             ? "No tasks yet. Add a task to get started!" 
             : filter === "active" 
@@ -112,7 +86,6 @@ const TodoList = () => {
         onFilterChange={setFilter}
         onClearCompleted={handleClearCompleted}
         completedCount={completedCount}
-        totalCount={todos.length}
       />
     </div>
   );
